@@ -15,18 +15,25 @@ for file in $remotefiles; do
         echo "found main.py, removing"
         $($ampcmd rm main.py)
     fi
+    if [ "$file" = "/boot.py" ]; then
+        echo "found boot.py, removing"
+        $($ampcmd rm boot.py)
+    fi
 done
 
 
 echo "installing"
 cd source
-echo "building scaffolding"
+echo "transfering boot.py"
+$($ampcmd put boot.py)
+echo "transfering main.py"
 $($ampcmd put main.py)
+echo "creating keyz/"
 $($ampcmd mkdir keyz)
 cd keyz
 localfiles=$(ls)
 for file in $localfiles; do
-    echo "transfering $file"
+    echo "transfering keyz/$file"
     $($ampcmd put $file /keyz/$file)
 done
 
